@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 for dir in /workspace/infrastructure/environments/*/; do
   env=${dir%*/}

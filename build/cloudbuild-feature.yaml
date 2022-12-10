@@ -2,15 +2,15 @@ steps:
   - id: 'Hello'
     name: 'bash'
     dir: 'build'
-    args: ['./hello.bash']
+    args: ['./hello.sh']
     env:
       - 'COMMIT_SHA=$COMMIT_SHA'
       - 'BRANCH_NAME=$BRANCH_NAME'
       - 'TAG_NAME=$TAG_NAME'
   - id: 'Terraform'
     name: 'hashicorp/terraform'
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     dir: 'build'
-    args: ['./terraform-plan-all.bash']
+    args: ['./terraform-plan-all.sh']
     env:
       - 'TF_CLI_ARGS="-var app-version=$COMMIT_SHA"'
