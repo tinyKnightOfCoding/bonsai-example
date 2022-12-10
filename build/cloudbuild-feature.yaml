@@ -14,3 +14,4 @@ steps:
     args: ['./terraform-plan-all.sh']
     env:
       - 'TF_VAR_app-version="$COMMIT_SHA"'
+      - 'HOST_PATTERN=$_HOST_PATTERN'
