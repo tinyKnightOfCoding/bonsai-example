@@ -34,6 +34,7 @@ steps:
     args: [ './terraform-apply-stage.sh' ]
     env:
       - 'TF_VAR_app-version="$COMMIT_SHA"'
+      - 'TF_VAR_docker-repo="${_IMAGE_REPO}'
       - 'HOST_PATTERN=$_HOST_PATTERN'
       - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
       - 'STAGE=$_STAGE'
