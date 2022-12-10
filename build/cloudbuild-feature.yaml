@@ -7,7 +7,7 @@ steps:
       - 'COMMIT_SHA=$COMMIT_SHA'
       - 'BRANCH_NAME=$BRANCH_NAME'
       - 'TAG_NAME=$TAG_NAME'
-  - id: 'Terraform'
+  - id: 'Terraform plan and init all stages'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
     dir: 'build'
@@ -16,3 +16,8 @@ steps:
       - 'TF_VAR_app-version="$COMMIT_SHA"'
       - 'HOST_PATTERN=$_HOST_PATTERN'
       - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
+  - id: 'Backend build'
+    name: 'gradle'
+    dir: 'backend'
+    entrypoint: 'gradle'
+    args: ['bootJar']
