@@ -28,7 +28,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
     args: ['build', '-t', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}', '.']
-  - id: 'build backend image'
+  - id: 'push backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
     args: ['push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}']
