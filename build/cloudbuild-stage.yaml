@@ -1,0 +1,40 @@
+steps:
+  - id: 'Hello'
+    name: 'bash'
+    dir: 'build'
+    args: ['./hello.sh']
+    env:
+      - 'COMMIT_SHA=$COMMIT_SHA'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - 'TAG_NAME=$TAG_NAME'
+  - id: 'Terraform plan stage'
+    name: 'hashicorp/terraform'
+    entrypoint: 'sh'
+    dir: 'build'
+    args: [ './terraform-plan-stage.sh' ]
+    env:
+      - 'TF_VAR_app-version=${TAG_NAME:-"$COMMIT_SHA"}'
+      - 'HOST_PATTERN=$_HOST_PATTERN'
+      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
+      - 'STAGE=$_STAGE'
+  - id: 'build backend jar'
+    name: 'gradle'
+    dir: 'backend'
+    entrypoint: 'gradle'
+    args: ['bootJar']
+  - id: 'build backend image'
+    name: 'gcr.io/cloud-builders/docker'
+    dir: 'backend'
+    args: ['build', '-t', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}', '.']
+  - id: 'Terraform apply stage'
+    name: 'hashicorp/terraform'
+    entrypoint: 'sh'
+    dir: 'build'
+    args: [ './terraform-apply-stage.sh' ]
+    env:
+      - 'TF_VAR_app-version=${TAG_NAME:-"$COMMIT_SHA"}'
+      - 'HOST_PATTERN=$_HOST_PATTERN'
+      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
+      - 'STAGE=$_STAGE'
+images:
+  - '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}'
