@@ -13,4 +13,4 @@ steps:
     dir: 'build'
     args: ['./terraform-plan-all.sh']
     env:
-      - 'TF_CLI_ARGS="-var app-version=$COMMIT_SHA"'
+      - 'TF_CLI_ARGS_plan="-var app-version=$COMMIT_SHA"'
