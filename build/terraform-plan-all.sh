@@ -2,7 +2,7 @@
 
 for dir in /workspace/infrastructure/environments/*/; do
   env=$(basename dir)
-  host=$(sed "s/${_HOST_PATTERN}/${env}/")
+  host=$(sed "s/${HOST_PATTERN}/${env}/")
   echo ""
   echo "*************** TERRAFORM INIT & PLAN *******************"
   echo "Directory   : ${dir}"

@@ -1,2 +1,2 @@
-project  = "tkoc-bonsai-example-de"
+project  = "tkoc-bonsai-example-dev"
 location = "europe-west6"
