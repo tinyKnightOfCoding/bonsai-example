@@ -1,0 +1,5 @@
+steps:
+  - id: 'Hello'
+    name: 'bash'
+    dir: 'build'
+    args: ['./hello.bash']
