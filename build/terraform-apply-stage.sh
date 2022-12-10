@@ -10,4 +10,4 @@ echo "Environment : ${env}"
 echo "Host        : ${host}"
 echo "*********************************************************"
 cd "${dir}" || exit 1
-terraform apply -auto-approve || exit 1
+terraform apply -var host="${host}" -auto-approve || exit 1
