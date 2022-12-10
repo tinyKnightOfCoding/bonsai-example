@@ -7,3 +7,10 @@ steps:
       - 'COMMIT_SHA=$COMMIT_SHA'
       - 'BRANCH_NAME=$BRANCH_NAME'
       - 'TAG_NAME=$TAG_NAME'
+  - id: 'Terraform'
+    name: 'hashicorp/terraform'
+    entrypoint: 'bash'
+    dir: 'build'
+    args: ['./terraform-plan-all.bash']
+    env:
+      - 'TF_CLI_ARGS="-var app-version=$COMMIT_SHA"'
