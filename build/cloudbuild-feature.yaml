@@ -15,4 +15,4 @@ steps:
     env:
       - 'TF_VAR_app-version="$COMMIT_SHA"'
       - 'HOST_PATTERN=$_HOST_PATTERN'
-      - 'TF_CLI_ARGS="-backend-config=\"bucket=$_TERRAFORM_BACKEND_BUCKET\"'
+      - 'TF_CLI_ARGS="-backend-config=\"bucket=$_TERRAFORM_BACKEND_BUCKET\""'
