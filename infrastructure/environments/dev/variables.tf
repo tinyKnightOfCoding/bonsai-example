@@ -13,3 +13,7 @@ variable "host" {
 variable "app-version" {
   type = string
 }
+
+variable "docker-repo" {
+  type = string
+}
