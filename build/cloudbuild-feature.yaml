@@ -3,3 +3,7 @@ steps:
     name: 'bash'
     dir: 'build'
     args: ['./hello.bash']
+    env:
+      - 'COMMIT_SHA=$COMMIT_SHA'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - 'TAG_NAME=$TAG_NAME'
