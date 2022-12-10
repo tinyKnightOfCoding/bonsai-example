@@ -1,0 +1,26 @@
+openapi: 3.0.0
+info:
+  title: 'Bonsai Examle API'
+  version: '1.0.0'
+paths:
+  /api-info:
+    get:
+      responses:
+        200:
+          description: get api info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInfo'
+components:
+  schemas:
+    ApiInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+      required:
+        - name
+        - version
