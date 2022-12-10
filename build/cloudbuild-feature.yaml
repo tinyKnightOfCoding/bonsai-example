@@ -2,4 +2,4 @@ steps:
   - id: 'Hello'
     name: 'bash'
     dir: 'build'
-    args: ['ls', '-A']
+    args: ['./hello.sh']
