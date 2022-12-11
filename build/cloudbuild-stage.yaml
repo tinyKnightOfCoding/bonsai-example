@@ -32,6 +32,27 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
     args: ['push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}']
+  - id: 'frontend'
+    name: 'node:lts-alpine'
+    dir: 'frontend'
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+        apk add chromium
+        apk add openjdk17
+        export CHROME_BIN="/usr/bin/chromium-browser"
+        npm install
+        npm run build
+        npm run test
+  - id: 'frontend image'
+    name: 'gcr.io/cloud-builders/docker'
+    dir: 'frontend'
+    args: ['build', '-t', '${_IMAGE_REPO}/bonsai-frontend:${COMMIT_SHA}', '.']
+  - id: 'push frontend image'
+    name: 'gcr.io/cloud-builders/docker'
+    dir: 'frontend'
+    args: [ 'push', '${_IMAGE_REPO}/bonsai-frontend:${COMMIT_SHA}' ]
   - id: 'Terraform apply stage'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
