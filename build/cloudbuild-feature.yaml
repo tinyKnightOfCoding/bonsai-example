@@ -33,6 +33,7 @@ steps:
         apk add chromium
         apk add openjdk17
         export CHROME_BIN="/usr/bin/chromium-browser"
+        useradd -m -d /code/test -s /bin/bash myuser
         npm install
         npm run build
-        npm run test
+        sudo -u myuser npm run test
