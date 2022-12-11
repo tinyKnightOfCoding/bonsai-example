@@ -1,0 +1,6 @@
+<main>
+  <h1>Hello, World!</h1>
+</main>
+<footer>
+  <span *ngIf="(apiInfo$ | async) as apiInfo">{{apiInfo.version}}</span>
+</footer>
