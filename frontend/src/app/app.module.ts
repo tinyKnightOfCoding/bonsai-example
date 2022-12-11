@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {ApiModule, Configuration, ConfigurationParameters} from "../api";
 import {HttpClientModule} from "@angular/common/http";
 
-function apiConfigFactory(): Configuration {
+export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
     basePath: '/api',
   };
