@@ -1,6 +1,6 @@
 steps:
   - id: 'Hello'
-    name: 'bash'
+    name: 'grc.io/tkoc-bonsai-example-dev/bonsai'
     dir: 'build'
     args: ['./hello.sh']
     env:
@@ -19,12 +19,12 @@ steps:
       - 'HOST_PATTERN=$_HOST_PATTERN'
       - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
   - id: 'Backend build'
-    name: 'gradle'
+    name: 'grc.io/tkoc-bonsai-example-dev/bonsai'
     dir: 'backend'
     entrypoint: 'gradle'
     args: ['bootJar']
   - id: 'frontend'
-    name: 'node:lts-alpine'
+    name: 'grc.io/tkoc-bonsai-example-dev/bonsai'
     dir: 'frontend'
     entrypoint: 'sh'
     args:
