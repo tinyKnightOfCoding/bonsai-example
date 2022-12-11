@@ -37,4 +37,4 @@ steps:
         export CHROME_BIN="/usr/bin/chromium-browser"
         npm install
         npm run build
-        sudo -u bob npm run test
+        npm run test
