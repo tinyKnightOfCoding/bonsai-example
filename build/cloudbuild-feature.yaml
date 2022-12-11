@@ -24,14 +24,15 @@ steps:
     entrypoint: 'gradle'
     args: ['bootJar']
   - id: 'frontend'
-    name: 'node'
+    name: 'node:lts-alpine'
     dir: 'frontend'
     entrypoint: 'sh'
     args:
       - -c
       - |
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends default-jre google-chrome-stable
+        apk add chromium
+        apk add openjdk17
+        export $CHROME_BIN="/usr/bin/chromium-browser"
         npm install
         npm run build
         npm run test
