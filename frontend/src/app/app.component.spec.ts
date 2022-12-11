@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import {HttpClientModule} from "@angular/common/http";
+import {ApiModule} from "../api";
+import {apiConfigFactory} from "./app.module";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -7,6 +10,10 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      imports: [
+        ApiModule.forRoot(apiConfigFactory),
+        HttpClientModule,
+      ]
     }).compileComponents();
   });
 
@@ -26,6 +33,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('frontend app is running!');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, World!');
   });
 });
