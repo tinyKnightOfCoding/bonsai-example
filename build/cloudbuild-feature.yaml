@@ -23,3 +23,15 @@ steps:
     dir: 'backend'
     entrypoint: 'gradle'
     args: ['bootJar']
+  - id: 'frontend'
+    name: 'node'
+    dir: 'frontend'
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends default-jre
+        npm install
+        npm run build
+        npm run test
