@@ -31,7 +31,7 @@ steps:
       - -c
       - |
         apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends default-jre
+        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends default-jre google-chrome-stable
         npm install
         npm run build
         npm run test
