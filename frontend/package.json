@@ -7,7 +7,7 @@
     "prebuild": "npm run generate-client",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --browsers=ChromeHeadless",
     "generate-client": "openapi-generator-cli generate -i ../api/spec.yaml -g typescript-angular -o src/api"
   },
   "private": true,
@@ -30,12 +30,14 @@
     "@angular/compiler-cli": "^15.0.0",
     "@openapitools/openapi-generator-cli": "^2.5.2",
     "@types/jasmine": "~4.3.0",
+    "install": "^0.13.0",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "npm": "^9.2.0",
     "typescript": "~4.8.2"
   }
 }
