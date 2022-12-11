@@ -32,8 +32,9 @@ steps:
       - |
         apk add chromium
         apk add openjdk17
+        apk add sudo
         export CHROME_BIN="/usr/bin/chromium-browser"
-        useradd -m -d /code/test -s /bin/bash myuser
+        adduser bob --disabled-password
         npm install
         npm run build
-        sudo -u myuser npm run test
+        sudo -u bob npm run test
