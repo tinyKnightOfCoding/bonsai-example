@@ -30,11 +30,11 @@ steps:
     args:
       - -c
       - |
+        adduser bob --disabled-password
+        su -p bob
         apk add chromium
         apk add openjdk17
-        apk add sudo
         export CHROME_BIN="/usr/bin/chromium-browser"
-        adduser bob --disabled-password
         npm install
         npm run build
         sudo -u bob npm run test
