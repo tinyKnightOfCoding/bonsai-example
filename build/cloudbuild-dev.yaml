@@ -18,12 +18,12 @@ steps:
       - 'TF_VAR_project=${PROJECT_ID}'
       - 'HOST_PATTERN=$_HOST_PATTERN'
       - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
-      - 'STAGE=$_STAGE'
+      - 'STAGE=dev'
   - id: 'build backend jar'
     name: 'gradle'
     dir: 'backend'
     entrypoint: 'gradle'
-    args: ['bootJar']
+    args: ['bootJar', '-Pversion=${COMMIT_SHA}.0.0']
   - id: 'build backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
@@ -33,15 +33,13 @@ steps:
     dir: 'backend'
     args: ['push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}']
   - id: 'frontend'
-    name: 'node:lts-alpine'
+    name: 'tinyknightofcoding/bonsai'
     dir: 'frontend'
     entrypoint: 'sh'
     args:
       - -c
       - |
-        apk add chromium
-        apk add openjdk17
-        export CHROME_BIN="/usr/bin/chromium-browser"
+        npm version ${COMMIT_SHA}.0.0
         npm install
         npm run build
         npm run test:ci
@@ -64,4 +62,4 @@ steps:
       - 'TF_VAR_project=${PROJECT_ID}'
       - 'HOST_PATTERN=$_HOST_PATTERN'
       - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
-      - 'STAGE=$_STAGE'
+      - 'STAGE=dev'
