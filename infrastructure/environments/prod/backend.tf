@@ -1,5 +1,6 @@
 terraform {
   backend "gcs" {
-    prefix = "prod"
+    bucket = "tkoc-bonsai-terraform-state"
+    prefix = "prod/state"
   }
 }

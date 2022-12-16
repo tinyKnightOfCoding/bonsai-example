@@ -1,0 +1,1 @@
+location = "europe-west6"
