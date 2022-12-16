@@ -63,3 +63,5 @@ steps:
       - 'HOST_PATTERN=$_HOST_PATTERN'
       - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
       - 'STAGE=dev'
+options:
+  logging: CLOUD_LOGGING_ONLY
