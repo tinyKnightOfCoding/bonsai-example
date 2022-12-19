@@ -36,14 +36,14 @@ steps:
     args:
       - 'build'
       - '-t'
-      - '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}'
+      - '${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}'
       - '-t'
-      - '${_IMAGE_REPO}/bonsai-backend:latest'
+      - '${_DOCKER_REPO}/bonsai-backend:latest'
       - '.'
   - id: 'push backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
-    args: [ 'push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}' ]
+    args: [ 'push', '${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}' ]
   - id: 'Terraform Apply'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
