@@ -20,9 +20,11 @@ steps:
       - 'TF_VAR_project=$_PROJECT'
       - 'TF_VAR_docker-repo=$_DOCKER_REPO'
       - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BUCKET"'
-    args: |
-      terraform init
-      terraform plan
+    args:
+      - '-c'
+      - |
+        terraform init
+        terraform plan
   - id: 'build backend jar'
     name: 'gradle'
     dir: 'backend'
