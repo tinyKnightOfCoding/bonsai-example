@@ -9,3 +9,7 @@ variable "location" {
 variable "docker-repo" {
   type = string
 }
+
+variable "stage" {
+  type = string
+}
