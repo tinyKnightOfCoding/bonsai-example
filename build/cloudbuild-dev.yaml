@@ -47,8 +47,8 @@ steps:
     args:
       - '-c'
       - |
-        docker push ${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}
-        docker push ${_IMAGE_REPO}/bonsai-backend:latest
+        docker push ${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}
+        docker push ${_DOCKER_REPO}/bonsai-backend:latest
   - id: 'build frontend'
     name: 'node:lts-alpine'
     dir: 'frontend'
@@ -74,8 +74,8 @@ steps:
     args:
       - '-c'
       - |
-        docker push ${_IMAGE_REPO}/bonsai-frontend:${COMMIT_SHA}
-        docker push ${_IMAGE_REPO}/bonsai-frontend:latest
+        docker push ${_DOCKER_REPO}/bonsai-frontend:${COMMIT_SHA}
+        docker push ${_DOCKER_REPO}/bonsai-frontend:latest
   - id: 'Terraform Apply'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
