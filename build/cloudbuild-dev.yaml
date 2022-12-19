@@ -58,7 +58,7 @@ steps:
       - |
         apk add openjdk17
         npm install
-        npm build
+        npm run build
   - id: 'frontend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'frontend'
