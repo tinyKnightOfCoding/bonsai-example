@@ -1,5 +1,5 @@
 terraform {
   backend "gcs" {
-    prefix = "dev/state"
+    prefix = "dev"
   }
 }
