@@ -2,12 +2,14 @@ steps:
   - id: 'Hello'
     name: 'bash'
     dir: 'build'
-    args: |
-      echo "*************************************************"
-      echo "Branch : ${BRANCH_NAME}"
-      echo "Commit : ${COMMIT_SHA}"
-      echo "Tags   : ${TAG_NAME}"
-      echo "*************************************************"
+    args:
+      - '-c'
+      - |
+        echo "*************************************************"
+        echo "Branch : ${BRANCH_NAME}"
+        echo "Commit : ${COMMIT_SHA}"
+        echo "Tags   : ${TAG_NAME}"
+        echo "*************************************************"
   - id: 'Terraform Init & Plan'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
@@ -25,7 +27,7 @@ steps:
     name: 'gradle'
     dir: 'backend'
     entrypoint: 'gradle'
-    args: ['bootJar']
+    args: [ 'bootJar' ]
   - id: 'push backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
@@ -40,14 +42,16 @@ steps:
       - '-t'
       - '${_IMAGE_REPO}/bonsai-backend:latest'
       - '.'
-  - id: 'Terraform Init & Plan'
+  - id: 'Terraform Apply'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
     dir: 'infrastructure/environments/dev'
     env:
       - 'TF_VAR_app-version=$COMMIT_SHA'
-    args: |
-      terraform apply
+    args:
+      - '-c'
+      - |
+        terraform apply
 logsBucket: "gs://${_LOGS_BUCKET}"
 options:
   logging: GCS_ONLY
