@@ -90,9 +90,7 @@ steps:
     args:
       - '-c'
       - |
-        terraform apply
-        npm install
-        npm run build
+        terraform apply -auto-approve
 logsBucket: "gs://${_LOGS_BUCKET}"
 options:
   logging: GCS_ONLY
