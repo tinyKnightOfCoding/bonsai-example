@@ -30,10 +30,6 @@ steps:
     dir: 'backend'
     entrypoint: 'gradle'
     args: [ 'bootJar' ]
-  - id: 'push backend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'backend'
-    args: [ 'push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}' ]
   - id: 'build backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
@@ -44,6 +40,10 @@ steps:
       - '-t'
       - '${_IMAGE_REPO}/bonsai-backend:latest'
       - '.'
+  - id: 'push backend image'
+    name: 'gcr.io/cloud-builders/docker'
+    dir: 'backend'
+    args: [ 'push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}' ]
   - id: 'Terraform Apply'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
