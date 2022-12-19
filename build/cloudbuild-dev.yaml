@@ -43,7 +43,12 @@ steps:
   - id: 'push backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
-    args: [ 'push', '${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}', '${_DOCKER_REPO}/bonsai-backend:latest' ]
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        docker push ${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}
+        docker push ${_IMAGE_REPO}/bonsai-backend:latest
   - id: 'build frontend'
     name: 'node:lts-alpine'
     dir: 'frontend'
@@ -65,7 +70,12 @@ steps:
   - id: 'push frontend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'frontend'
-    args: [ 'push', '${_IMAGE_REPO}/bonsai-frontend:${COMMIT_SHA}', '${_IMAGE_REPO}/bonsai-frontend:latest' ]
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        docker push ${_IMAGE_REPO}/bonsai-frontend:${COMMIT_SHA}
+        docker push ${_IMAGE_REPO}/bonsai-frontend:latest
   - id: 'Terraform Apply'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
