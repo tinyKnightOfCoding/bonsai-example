@@ -4,8 +4,9 @@ provider "google" {
 }
 
 module "app" {
-  source = "../../modules/app"
+  source      = "../../modules/app"
   app-version = var.app-version
-  location = var.location
+  stage       = "dev"
+  location    = var.location
   docker-repo = var.docker-repo
 }

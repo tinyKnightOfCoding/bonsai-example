@@ -2,66 +2,52 @@ steps:
   - id: 'Hello'
     name: 'bash'
     dir: 'build'
-    args: ['./hello.sh']
-    env:
-      - 'COMMIT_SHA=$COMMIT_SHA'
-      - 'BRANCH_NAME=$BRANCH_NAME'
-      - 'TAG_NAME=$TAG_NAME'
-  - id: 'Terraform plan stage'
+    args: |
+      echo "*************************************************"
+      echo "Branch : ${BRANCH_NAME}"
+      echo "Commit : ${COMMIT_SHA}"
+      echo "Tags   : ${TAG_NAME}"
+      echo "*************************************************"
+  - id: 'Terraform Init & Plan'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
-    dir: 'build'
-    args: [ './terraform-plan-stage.sh' ]
+    dir: 'infrastructure/environments/dev'
     env:
       - 'TF_VAR_app-version=$COMMIT_SHA'
-      - 'TF_VAR_docker-repo=${_IMAGE_REPO}'
-      - 'TF_VAR_project=${PROJECT_ID}'
-      - 'HOST_PATTERN=$_HOST_PATTERN'
-      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
-      - 'STAGE=dev'
+      - 'TF_VAR_host=$_HOST'
+      - 'TF_VAR_project=$_PROJECT'
+      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
+      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BUCKET"'
+    args: |
+      terraform init
+      terraform plan
   - id: 'build backend jar'
     name: 'gradle'
     dir: 'backend'
     entrypoint: 'gradle'
-    args: ['bootJar', '-Pversion=${COMMIT_SHA}.0.0']
-  - id: 'build backend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'backend'
-    args: ['build', '-t', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}', '.']
+    args: ['bootJar']
   - id: 'push backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
-    args: ['push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}']
-  - id: 'frontend'
-    name: 'tinyknightofcoding/bonsai'
-    dir: 'frontend'
-    entrypoint: 'sh'
+    args: [ 'push', '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}' ]
+  - id: 'build backend image'
+    name: 'gcr.io/cloud-builders/docker'
+    dir: 'backend'
     args:
-      - -c
-      - |
-        npm version ${COMMIT_SHA}.0.0
-        npm install
-        npm run build
-        npm run test:ci
-  - id: 'frontend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'frontend'
-    args: ['build', '-t', '${_IMAGE_REPO}/bonsai-frontend:${COMMIT_SHA}', '.']
-  - id: 'push frontend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'frontend'
-    args: [ 'push', '${_IMAGE_REPO}/bonsai-frontend:${COMMIT_SHA}' ]
-  - id: 'Terraform apply stage'
+      - 'build'
+      - '-t'
+      - '${_IMAGE_REPO}/bonsai-backend:${COMMIT_SHA}'
+      - '-t'
+      - '${_IMAGE_REPO}/bonsai-backend:latest'
+      - '.'
+  - id: 'Terraform Init & Plan'
     name: 'hashicorp/terraform'
     entrypoint: 'sh'
-    dir: 'build'
-    args: [ './terraform-apply-stage.sh' ]
+    dir: 'infrastructure/environments/dev'
     env:
       - 'TF_VAR_app-version=$COMMIT_SHA'
-      - 'TF_VAR_docker-repo=${_IMAGE_REPO}'
-      - 'TF_VAR_project=${PROJECT_ID}'
-      - 'HOST_PATTERN=$_HOST_PATTERN'
-      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BACKEND_BUCKET"'
-      - 'STAGE=dev'
+    args: |
+      terraform apply
+logsBucket: "gs://${_LOGS_BUCKET}"
 options:
-  logging: CLOUD_LOGGING_ONLY
+  logging: GCS_ONLY
