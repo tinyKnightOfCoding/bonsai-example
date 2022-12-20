@@ -1,54 +1,54 @@
 steps:
-  - id: 'Hello'
-    name: 'bash'
-    dir: 'build'
-    args:
-      - '-c'
-      - |
-        echo "*************************************************"
-        echo "Branch : ${BRANCH_NAME}"
-        echo "Commit : ${COMMIT_SHA}"
-        echo "Tags   : ${TAG_NAME}"
-        echo "*************************************************"
-  - id: 'Terraform Init & Plan'
-    name: 'hashicorp/terraform'
-    entrypoint: 'sh'
-    dir: 'infrastructure/environments/dev'
-    env:
-      - 'TF_VAR_app-version=$COMMIT_SHA'
-      - 'TF_VAR_host=$_HOST'
-      - 'TF_VAR_project=$_PROJECT'
-      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
-      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BUCKET"'
-    args:
-      - '-c'
-      - |
-        terraform init
-        terraform plan
-  - id: 'build backend jar'
-    name: 'gradle'
-    dir: 'backend'
-    entrypoint: 'gradle'
-    args: [ 'bootJar' ]
-  - id: 'build backend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'backend'
-    args:
-      - 'build'
-      - '-t'
-      - '${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}'
-      - '-t'
-      - '${_DOCKER_REPO}/bonsai-backend:latest'
-      - '.'
-  - id: 'push backend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'backend'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        docker push ${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}
-        docker push ${_DOCKER_REPO}/bonsai-backend:latest
+#  - id: 'Hello'
+#    name: 'bash'
+#    dir: 'build'
+#    args:
+#      - '-c'
+#      - |
+#        echo "*************************************************"
+#        echo "Branch : ${BRANCH_NAME}"
+#        echo "Commit : ${COMMIT_SHA}"
+#        echo "Tags   : ${TAG_NAME}"
+#        echo "*************************************************"
+#  - id: 'Terraform Init & Plan'
+#    name: 'hashicorp/terraform'
+#    entrypoint: 'sh'
+#    dir: 'infrastructure/environments/dev'
+#    env:
+#      - 'TF_VAR_app-version=$COMMIT_SHA'
+#      - 'TF_VAR_host=$_HOST'
+#      - 'TF_VAR_project=$_PROJECT'
+#      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
+#      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BUCKET"'
+#    args:
+#      - '-c'
+#      - |
+#        terraform init
+#        terraform plan
+#  - id: 'build backend jar'
+#    name: 'gradle'
+#    dir: 'backend'
+#    entrypoint: 'gradle'
+#    args: [ 'bootJar' ]
+#  - id: 'build backend image'
+#    name: 'gcr.io/cloud-builders/docker'
+#    dir: 'backend'
+#    args:
+#      - 'build'
+#      - '-t'
+#      - '${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}'
+#      - '-t'
+#      - '${_DOCKER_REPO}/bonsai-backend:latest'
+#      - '.'
+#  - id: 'push backend image'
+#    name: 'gcr.io/cloud-builders/docker'
+#    dir: 'backend'
+#    entrypoint: 'sh'
+#    args:
+#      - '-c'
+#      - |
+#        docker push ${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}
+#        docker push ${_DOCKER_REPO}/bonsai-backend:latest
   - id: 'build frontend'
     name: 'node:lts-alpine'
     dir: 'frontend'
@@ -59,41 +59,42 @@ steps:
         apk add openjdk17
         apk add chromium
         CHROME_BIN=$(which chromium)
+        echo $CHROME_BIN
         npm install
         npm run build
         npm run test:ci
-  - id: 'frontend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'frontend'
-    args:
-      - 'build'
-      - '-t'
-      - '${_DOCKER_REPO}/bonsai-frontend:${COMMIT_SHA}'
-      - '-t'
-      - '${_DOCKER_REPO}/bonsai-frontend:latest'
-      - '.'
-  - id: 'push frontend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'frontend'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        docker push ${_DOCKER_REPO}/bonsai-frontend:${COMMIT_SHA}
-        docker push ${_DOCKER_REPO}/bonsai-frontend:latest
-  - id: 'Terraform Apply'
-    name: 'hashicorp/terraform'
-    entrypoint: 'sh'
-    dir: 'infrastructure/environments/dev'
-    env:
-      - 'TF_VAR_app-version=$COMMIT_SHA'
-      - 'TF_VAR_host=$_HOST'
-      - 'TF_VAR_project=$_PROJECT'
-      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
-    args:
-      - '-c'
-      - |
-        terraform apply -auto-approve
+#  - id: 'frontend image'
+#    name: 'gcr.io/cloud-builders/docker'
+#    dir: 'frontend'
+#    args:
+#      - 'build'
+#      - '-t'
+#      - '${_DOCKER_REPO}/bonsai-frontend:${COMMIT_SHA}'
+#      - '-t'
+#      - '${_DOCKER_REPO}/bonsai-frontend:latest'
+#      - '.'
+#  - id: 'push frontend image'
+#    name: 'gcr.io/cloud-builders/docker'
+#    dir: 'frontend'
+#    entrypoint: 'sh'
+#    args:
+#      - '-c'
+#      - |
+#        docker push ${_DOCKER_REPO}/bonsai-frontend:${COMMIT_SHA}
+#        docker push ${_DOCKER_REPO}/bonsai-frontend:latest
+#  - id: 'Terraform Apply'
+#    name: 'hashicorp/terraform'
+#    entrypoint: 'sh'
+#    dir: 'infrastructure/environments/dev'
+#    env:
+#      - 'TF_VAR_app-version=$COMMIT_SHA'
+#      - 'TF_VAR_host=$_HOST'
+#      - 'TF_VAR_project=$_PROJECT'
+#      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
+#    args:
+#      - '-c'
+#      - |
+#        terraform apply -auto-approve
 logsBucket: "gs://${_LOGS_BUCKET}"
 options:
   logging: GCS_ONLY
