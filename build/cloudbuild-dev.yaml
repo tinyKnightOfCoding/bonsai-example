@@ -58,6 +58,7 @@ steps:
       - |
         apk add openjdk17
         apk add chromium
+        CHROME_BIN=$(which chromium)
         npm install
         npm run build
         npm run test:ci
