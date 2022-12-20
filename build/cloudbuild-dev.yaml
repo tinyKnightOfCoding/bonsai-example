@@ -53,12 +53,13 @@ steps:
     name: 'node:lts-alpine'
     dir: 'frontend'
     entrypoint: 'sh'
+    env:
+      - 'CHROME_BIN=/usr/bin/chromium-browser'
     args:
       - '-c'
       - |
         apk add openjdk17
         apk add chromium
-        CHROME_BIN=$$(which chromium-browser)
         echo "Chrome installed in $$CHROME_BIN"
         npm install
         npm run build
