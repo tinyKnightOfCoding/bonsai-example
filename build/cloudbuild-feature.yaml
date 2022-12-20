@@ -40,15 +40,6 @@ steps:
       - '-t'
       - '${_DOCKER_REPO}/bonsai-backend:latest'
       - '.'
-  - id: 'push backend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'backend'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        docker push ${_DOCKER_REPO}/bonsai-backend:${COMMIT_SHA}
-        docker push ${_DOCKER_REPO}/bonsai-backend:latest
   - id: 'build frontend'
     name: 'node:lts-alpine'
     dir: 'frontend'
@@ -71,28 +62,6 @@ steps:
       - '-t'
       - '${_DOCKER_REPO}/bonsai-frontend:latest'
       - '.'
-  - id: 'push frontend image'
-    name: 'gcr.io/cloud-builders/docker'
-    dir: 'frontend'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        docker push ${_DOCKER_REPO}/bonsai-frontend:${COMMIT_SHA}
-        docker push ${_DOCKER_REPO}/bonsai-frontend:latest
-  - id: 'Terraform Apply'
-    name: 'hashicorp/terraform'
-    entrypoint: 'sh'
-    dir: 'infrastructure/environments/dev'
-    env:
-      - 'TF_VAR_app-version=$COMMIT_SHA'
-      - 'TF_VAR_host=$_HOST'
-      - 'TF_VAR_project=$_PROJECT'
-      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
-    args:
-      - '-c'
-      - |
-        terraform apply -auto-approve
 logsBucket: "gs://${_LOGS_BUCKET}"
 options:
   logging: GCS_ONLY
