@@ -58,8 +58,8 @@ steps:
       - |
         apk add openjdk17
         apk add chromium
-        CHROME_BIN=$$(which chromium)
-        echo $$CHROME_BIN
+        CHROME_BIN=$$(which chromium-browser)
+        echo "Chrome installed in $$CHROME_BIN"
         npm install
         npm run build
         npm run test:ci
