@@ -29,7 +29,7 @@ steps:
     name: 'gradle'
     dir: 'backend'
     entrypoint: 'gradle'
-    args: [ 'bootJar' ]
+    args: [ '-Pversion=$TAG_NAME', 'bootJar' ]
   - id: 'build backend image'
     name: 'gcr.io/cloud-builders/docker'
     dir: 'backend'
@@ -53,12 +53,14 @@ steps:
     name: 'node:lts-alpine'
     dir: 'frontend'
     entrypoint: 'sh'
+    env:
+      - 'CHROME_BIN=/usr/bin/chromium-browser'
     args:
       - '-c'
       - |
         apk add openjdk17
         apk add chromium
-        CHROME_BIN=$(which chromium)
+        npm version $TAG_NAME
         npm install
         npm run build
         npm run test:ci
