@@ -1,5 +1,24 @@
+data "google_project" "project-main" {
+  project_id = "${var.project-prefix}-main"
+}
+
+data "google_artifact_registry_repository" "repo" {
+  location      = var.location
+  repository_id = "${var.project-prefix}-repo"
+  project       = data.google_project.project-main.id
+}
+
 resource "google_project_service" "run" {
   service = "run.googleapis.com"
+}
+
+resource "google_artifact_registry_repository_iam_member" "member" {
+  project    = data.google_artifact_registry_repository.repo.project
+  location   = data.google_artifact_registry_repository.repo.location
+  repository = data.google_artifact_registry_repository.repo.id
+  role       = "roles/artifactregistry.reader"
+  member     = "serviceAccount:service-${data.google_project.project-main.number}@serverless-robot-prod.iam.gserviceaccount.com"
+  depends_on = [google_project_service.run]
 }
 
 
@@ -7,7 +26,7 @@ module "backend" {
   source     = "github.com/tinyKnightOfCoding/bonsai//modules/service"
   name       = "bonsai-backend"
   location   = var.location
-  image      = "${var.docker-repo}/bonsai-backend:${var.app-version}"
+  image      = "${var.location}-docker.pkg.dev/${data.google_project.project-main.id}/${data.google_artifact_registry_repository.repo.name}/bonsai-backend:${var.app-version}"
   port       = "8080"
   depends_on = [google_project_service.run]
 }
@@ -16,7 +35,7 @@ module "frontend" {
   source     = "github.com/tinyKnightOfCoding/bonsai//modules/service"
   name       = "bonsai-frontend"
   location   = var.location
-  image      = "${var.docker-repo}/bonsai-frontend:${var.app-version}"
+  image      = "${var.location}-docker.pkg.dev/${data.google_project.project-main.id}/${data.google_artifact_registry_repository.repo.name}/bonsai-frontend:${var.app-version}"
   port       = "80"
   depends_on = [google_project_service.run]
 }

@@ -17,9 +17,6 @@ steps:
     env:
       - 'TF_VAR_app-version=$COMMIT_SHA'
       - 'TF_VAR_host=$_HOST'
-      - 'TF_VAR_project=$_PROJECT'
-      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
-      - 'TF_CLI_ARGS_init="-backend-config=bucket=$_TERRAFORM_BUCKET"'
     args:
       - '-c'
       - |
@@ -90,12 +87,10 @@ steps:
     env:
       - 'TF_VAR_app-version=$COMMIT_SHA'
       - 'TF_VAR_host=$_HOST'
-      - 'TF_VAR_project=$_PROJECT'
-      - 'TF_VAR_docker-repo=$_DOCKER_REPO'
     args:
       - '-c'
       - |
         terraform apply -auto-approve
-logsBucket: "gs://${_LOGS_BUCKET}"
+logsBucket: "gs://murgiwnqzl-build/logs"
 options:
   logging: GCS_ONLY

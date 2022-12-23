@@ -6,10 +6,10 @@ variable "location" {
   type = string
 }
 
-variable "docker-repo" {
+variable "stage" {
   type = string
 }
 
-variable "stage" {
+variable "project-prefix" {
   type = string
 }

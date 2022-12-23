@@ -1,12 +1,13 @@
 provider "google" {
-  project = var.project
+  project = "${var.project-prefix}-dev"
   region  = var.location
+  version = "4.47.0"
 }
 
 module "app" {
-  source      = "../../modules/app"
-  app-version = var.app-version
-  stage       = "dev"
-  location    = var.location
-  docker-repo = var.docker-repo
+  source         = "../../modules/app"
+  app-version    = var.app-version
+  stage          = "dev"
+  location       = var.location
+  project-prefix = var.project-prefix
 }
