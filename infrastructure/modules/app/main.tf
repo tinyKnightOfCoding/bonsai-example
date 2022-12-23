@@ -16,12 +16,10 @@ resource "google_project_service" "run" {
   service = "run.googleapis.com"
 }
 
-resource "google_artifact_registry_repository_iam_member" "member" {
-  project    = data.google_artifact_registry_repository.repo.project
-  location   = data.google_artifact_registry_repository.repo.location
-  repository = local.repo-name
-  role       = "roles/artifactregistry.reader"
-  member     = "serviceAccount:service-${data.google_project.project-main.number}@serverless-robot-prod.iam.gserviceaccount.com"
+resource "google_project_iam_member" "artifact-reader" {
+  member  = "serviceAccount:service-${data.google_project.project-main.number}@serverless-robot-prod.iam.gserviceaccount.com"
+  project = "${var.project-prefix}-main"
+  role    = "roles/artifactregistry.reader"
   depends_on = [google_project_service.run]
 }
 
