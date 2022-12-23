@@ -92,5 +92,7 @@ steps:
       - |
         terraform apply -auto-approve
 logsBucket: "gs://murgiwnqzl-build/logs"
+substitutions:
+  _DOCKER_REPO: "europe-west6-docker.pkg.dev/murgiwnqzl-main/murgiwnqzl-repo"
 options:
   logging: GCS_ONLY
