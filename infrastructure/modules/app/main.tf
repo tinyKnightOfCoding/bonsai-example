@@ -30,7 +30,7 @@ module "backend" {
   location   = var.location
   image      = "${local.repo-name}/bonsai-backend:${var.app-version}"
   port       = "8080"
-  depends_on = [google_project_service.run]
+  depends_on = [google_project_service.run, google_project_iam_member.artifact-reader]
 }
 
 module "frontend" {
@@ -39,5 +39,5 @@ module "frontend" {
   location   = var.location
   image      = "${local.repo-name}/bonsai-frontend:${var.app-version}"
   port       = "80"
-  depends_on = [google_project_service.run]
+  depends_on = [google_project_service.run, google_project_iam_member.artifact-reader]
 }
