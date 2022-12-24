@@ -45,3 +45,13 @@ module "frontend" {
   port       = "80"
   depends_on = [google_project_service.run, google_project_iam_member.artifact-reader]
 }
+
+module "network" {
+  source     = "github.com/tinyKnightOfCoding/bonsai//modules/network"
+  location           = var.location
+  default_service_id = module.frontend.backend_service_id
+  hosts              = [var.host]
+  services           = {
+    "/api" = module.backend.backend_service_id
+  }
+}

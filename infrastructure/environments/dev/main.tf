@@ -9,4 +9,5 @@ module "app" {
   stage          = "dev"
   location       = var.location
   project-prefix = var.project-prefix
+  host           = var.host
 }

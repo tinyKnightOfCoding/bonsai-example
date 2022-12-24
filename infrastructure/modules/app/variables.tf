@@ -13,3 +13,7 @@ variable "stage" {
 variable "project-prefix" {
   type = string
 }
+
+variable "host" {
+  type = string
+}
