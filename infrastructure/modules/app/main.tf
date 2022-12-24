@@ -2,6 +2,10 @@ data "google_project" "project-main" {
   project_id = "${var.project-prefix}-main"
 }
 
+data "google_project" "project-stage" {
+  project_id = "${var.project-prefix}-${var.stage}"
+}
+
 data "google_artifact_registry_repository" "repo" {
   location      = var.location
   repository_id = "${var.project-prefix}-repo"
@@ -17,7 +21,7 @@ resource "google_project_service" "run" {
 }
 
 resource "google_project_iam_member" "artifact-reader" {
-  member  = "serviceAccount:service-${data.google_project.project-main.number}@serverless-robot-prod.iam.gserviceaccount.com"
+  member  = "serviceAccount:service-${data.google_project.project-stage.number}@serverless-robot-prod.iam.gserviceaccount.com"
   project = "${var.project-prefix}-main"
   role    = "roles/artifactregistry.reader"
   depends_on = [google_project_service.run]
