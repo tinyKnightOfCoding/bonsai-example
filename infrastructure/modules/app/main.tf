@@ -13,7 +13,7 @@ data "google_artifact_registry_repository" "repo" {
 }
 
 locals {
-  repo-name = "${var.location}-docker.pkg.dev/${data.google_project.project-main.id}/${var.project-prefix}-repo"
+  repo-name = "${var.location}-docker.pkg.dev/${data.google_project.project-main.project_id}/${var.project-prefix}-repo"
 }
 
 resource "google_project_service" "run" {
